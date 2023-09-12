@@ -1,0 +1,33 @@
+﻿@model GraphEase.Models.AnalysisResultsViewModel
+
+<h2>Cinsiyete Göre Satışlar</h2>
+<canvas id="genderSalesChart" width="400" height="200"></canvas>
+<pre>@Newtonsoft.Json.JsonConvert.SerializeObject(Model.GenderSalesData)</pre>
+
+<!-- Scriptler -->
+<script>
+    @if (Model.GenderSalesData != null)
+    {
+        <text>
+                    var ctxGender = document.getElementById('genderSalesChart').getContext('2d');
+        var genderChart = new Chart(ctxGender, {
+            type: 'bar',
+            data: {
+                labels: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.GenderSalesData.Select(d => d.Gender))),
+                datasets: [{
+                    label: 'Cinsiyete Göre Satışlar',
+                    data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.GenderSalesData.Select(d => d.TotalSales))),
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            }
+        });
+        </text>
+    }
+        console.log("Grafik kodu çalıştı.");
+
+</script>
+
+
+

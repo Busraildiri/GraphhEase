@@ -1,0 +1,20 @@
+﻿@{
+    ViewData["Title"] = "Excel Yükle";
+}
+
+<h1>Excel Dosyası Yükle</h1>
+
+<form method="post" asp-controller="Graph" asp-action="Upload" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="excelFile">Excel Dosyası:</label>
+        <input type="file" name="excelFile" class="form-control" required />
+    </div>
+
+    @if (ViewData.ModelState.TryGetValue("excelFile", out var excelFileError) &&
+    excelFileError.Errors?.Count > 0)
+    {
+        <span class="text-danger">@excelFileError.Errors[0]?.ErrorMessage</span>
+    }
+
+    <button type="submit" class="btn btn-primary">Yükle</button>
+</form>

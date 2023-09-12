@@ -1,0 +1,67 @@
+﻿<!-- Başlangıçta tüm butonları göstermek için navigasyon menüsü -->
+<nav>
+    <button onclick="loadGraph('gender_sales')">Cinsiyetlere Göre Toplam Satışlar</button>
+    <button onclick="loadGraph('city_product_gender_sales')">Şehir, Ürün Ve Cinsiyete Göre Satışlar</button>
+    <button onclick="loadGraph('city_gender_sales')">Şehir Bazında Cinsiyete Göre Satışlar</button>
+    <button onclick="loadGraph('product_sales')">Ürün Adına Göre Toplam Satışlar</button>
+    <button onclick="loadGraph('city_product_sales')">Şehirlere Göre Ürünlerin Satış</button>
+</nav>
+
+<!-- Grafiklerin gösterileceği alan -->
+<div id="chartContainer" style="height: 370px; width: 100%;"></div>
+
+<!-- Kullanıcının grafik türünü değiştirebilmesi için bir dropdown seçici -->
+<select id="chartTypeSelect">
+    <option value="pie">Pasta Grafiği</option>
+    <option value="bar">Bar Grafiği</option>
+    <option value="column">Sütun Grafiği</option>
+    <option value="area">Alan Grafiği</option>
+    <option value="line">Çizgi Grafiği</option>
+</select>
+<button onclick="changeGraphType()">Grafik Türünü Değiştir</button>
+
+<!-- Bu kod JavaScript ile yazıldı -->
+<script src="path/to/your/jquery.js"></script>
+<script src="path/to/your/canvasjs.min.js"></script>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+
+<script>
+    var chart; // Global olarak tanımlanan grafik değişkeni.
+
+    function loadGraph(graphType) {
+        $.get('/Graph/GetGraphData?graphType=' + graphType, function (data) {
+            var chartOptions = {
+                title: {
+                    text: data.title
+                },
+                data: [{
+                    type: $("#chartTypeSelect").val(),
+                    dataPoints: data.dataPoints
+                }]
+            };
+
+            // Eğer grafik zaten oluşturulduysa, yeni verilerle güncelle. Yoksa yeni bir grafik oluştur.
+            if (chart) {
+                chart.options = chartOptions;
+                chart.render();
+            } else {
+                chart = new CanvasJS.Chart("chartContainer", chartOptions);
+                chart.render();
+            }
+        });
+    }
+
+    function changeGraphType() {
+        if (chart) {
+            chart.options.data[0].type = $("#chartTypeSelect").val();
+            chart.render();
+        }
+    }
+
+    // İlk yüklemede varsayılan bir grafik türü ile grafik oluşturma.
+    $(document).ready(function () {
+        loadGraph('gender_sales');
+    });
+</script>
+

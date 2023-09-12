@@ -1,0 +1,79 @@
+﻿
+
+
+@model GraphEase.Models.AnalysisResultsViewModel
+
+@if (Model != null)
+{
+    @if (Model.GenderSalesData != null)
+    {
+        <h2>Cinsiyetlere Göre Toplam Satışlar</h2>
+        <ul>
+            @foreach (var item in Model.GenderSalesData)
+            {
+                <li>@item.Gender: @item.TotalSales</li>
+            }
+        </ul>
+    }
+    @if (Model.CityProductGenderSalesData != null)
+    {
+        <h2>Şehir, Ürün Ve Cinsiyete Göre Satışlar</h2>
+        <ul>
+            @foreach (var item in Model.CityProductGenderSalesData)
+            {
+                <li>
+                    @item.City - @item.ProductName:
+                    <ul>
+                        <li>Erkek Satışları: @item.MaleSales</li>
+                        <li>Kadın Satışları: @item.FemaleSales</li>
+                    </ul>
+                </li>
+            }
+        </ul>
+    }
+
+    @if (Model.CityGenderSalesData != null)
+    {
+        <h2>Şehir Bazında Cinsiyete Göre Satışlar</h2>
+        <ul>
+            @foreach (var city in Model.CityGenderSalesData)
+            {
+                <li>
+                    @city.City:
+                    <ul>
+                        <li>Erkek Satışları: @city.MaleSales</li>
+                        <li>Kadın Satışları: @city.FemaleSales</li>
+                    </ul>
+                </li>
+            }
+        </ul>
+    }
+
+    @if (Model.ProductSalesData != null)
+    {
+        <h2>Ürün Adına Göre Toplam Satışlar</h2>
+        <ul>
+            @foreach (var product in Model.ProductSalesData)
+            {
+                <li>@product.ProductName: @product.TotalSales</li>
+            }
+        </ul>
+    }
+
+    @if (Model.CityProductSalesData != null)
+    {
+        <h2>Şehirlere Göre Ürünlerin Satış Durumları:</h2>
+        <ul>
+            @foreach (var cityProduct in Model.CityProductSalesData)
+            {
+                <li>
+                    @cityProduct.City: @cityProduct.ProductName (@cityProduct.TotalSales satış)
+                </li>
+            }
+        </ul>
+    }
+}
+else
+{
+    <p>Veri bulunamadı.</p>
+}

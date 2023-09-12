@@ -1,0 +1,171 @@
+﻿@{
+    ViewData["Title"] = "Satış Analiz Sonuçları";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="accordion" id="salesAccordion">
+
+    <div class="card">
+        <div class="card-header" id="headingOne">
+            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                Cinsiyetlere Göre Toplam Satışlar
+            </button>
+        </div>
+        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#salesAccordion">
+            <div class="card-body">
+                <select class="chartTypeSelector">
+                    <option value="line">Çizgi Grafiği</option>
+                    <option value="bar">Bar Grafiği</option>
+                    <option value="pie">Pasta Grafiği</option>
+                </select>
+                <canvas id="genderSalesChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header" id="headingTwo">
+            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                Şehir, Ürün Ve Cinsiyete Göre Satışlar
+            </button>
+        </div>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#salesAccordion">
+            <div class="card-body">
+                <select class="chartTypeSelector">
+                    <option value="line">Çizgi Grafiği</option>
+                    <option value="bar">Bar Grafiği</option>
+                    <option value="pie">Pasta Grafiği</option>
+                </select>
+                <canvas id="cityProductGenderSalesChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header" id="headingThree">
+            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                Şehir Bazında Cinsiyete Göre Satışlar
+            </button>
+        </div>
+        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#salesAccordion">
+            <div class="card-body">
+                <select class="chartTypeSelector">
+                    <option value="line">Çizgi Grafiği</option>
+                    <option value="bar">Bar Grafiği</option>
+                    <option value="pie">Pasta Grafiği</option>
+                </select>
+                <canvas id="cityGenderSalesChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header" id="headingFour">
+            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                Ürün Adına Göre Toplam Satışlar
+            </button>
+        </div>
+        <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#salesAccordion">
+            <div class="card-body">
+                <select class="chartTypeSelector">
+                    <option value="line">Çizgi Grafiği</option>
+                    <option value="bar">Bar Grafiği</option>
+                    <option value="pie">Pasta Grafiği</option>
+                </select>
+                <canvas id="productSalesChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header" id="headingFive">
+            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                Şehirlere Göre Ürünlerin Satış Durumları
+            </button>
+        </div>
+        <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#salesAccordion">
+            <div class="card-body">
+                <select class="chartTypeSelector">
+                    <option value="line">Çizgi Grafiği</option>
+                    <option value="bar">Bar Grafiği</option>
+                    <option value="pie">Pasta Grafiği</option>
+                </select>
+                <canvas id="cityProductSalesChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Grafiklerinizi oluşturmak için JavaScript kodlarınızı burada ekleyebilirsiniz. -->
+@{
+    ViewData["Title"] = "Satış Analiz Sonuçları";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="accordion" id="salesAccordion">
+
+    @* Diğer card kısımları unchanged olarak devam ediyor. Bu bölümlerde herhangi bir hata görünmüyor. *@
+
+</div>
+
+<!-- Grafiklerinizi oluşturmak için JavaScript kodlarınızı burada ekleyebilirsiniz. -->
+
+<script>
+    // 1. Cinsiyetlere Göre Toplam Satışlar
+    var genderSalesCtx = document.getElementById('genderSalesChart').getContext('2d');
+    var genderSalesChart = new Chart(genderSalesCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Erkek', 'Kadın'],
+            datasets: [{
+                label: 'Cinsiyetlere Göre Toplam Satışlar',
+                data: [1175, 1400],
+                backgroundColor: ['#3498db', '#e74c3c']
+            }]
+        }
+    });
+
+    // ... Diğer grafik kodları unchanged olarak devam ediyor ...
+
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Tüm seçici elemanları al
+        const selectors = document.querySelectorAll(".chartTypeSelector");
+
+        // Seçici elemanlara değişiklik algılayıcı ekleyin
+        selectors.forEach(function (selector) {
+            selector.addEventListener("change", function () {
+                const chartType = this.value;
+                const canvas = this.nextElementSibling;
+                updateChartType(canvas, chartType);
+            });
+        });
+    });
+
+    // Grafik türünü güncelleme fonksiyonu
+    function updateChartType(canvas, chartType) {
+        if (canvas.chartInstance) {
+            canvas.chartInstance.destroy(); // Mevcut grafiği kaldır
+        }
+
+        // Yeni grafik türüyle grafik oluştur
+        // NOT: Bu kısımda veri ve seçenekleri grafik türüne uygun olarak değiştirmeniz gerekmektedir.
+        const ctx = canvas.getContext('2d');
+        const chartData = {}; // Gerçek verilerle doldurun
+        const chartOptions = {}; // İstediğiniz seçenekleri ekleyin
+
+        new Chart(ctx, {
+            type: chartType,
+            data: chartData,
+            options: chartOptions
+        });
+    }
+</script>
+
+
+
